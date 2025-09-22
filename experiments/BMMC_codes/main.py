@@ -29,7 +29,7 @@ atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 prot_hvg = np.where(adata.var_names.isin(adata.uns['prot_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg,"2":prot_hvg}
 
-model = Integration(data=adata, layer = 'counts', modality_key="modality",count_data=True, 
+model = Integration(data=adata, layer = 'counts', modality_key="modality",distribution="ZINB", 
                     batch_key="batch", feature_list=feature_list)
 model.setup(hidden_layers = [128,128], latent_dim_shared = 30, latent_dim_specific = 30, 
             beta = 5, gamma = 10, lambda_adv = 10, dropout_rate=0.2)

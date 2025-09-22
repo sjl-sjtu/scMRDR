@@ -33,7 +33,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [128,128], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = 2, gamma = 0, lambda_adv = 5, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = True, num_warmup = 0,
@@ -45,7 +45,7 @@ adata.write("/ailab/user/sunjianle-hdd/integration27/mop/muto/feature_aligned_no
 adata = sc.read_h5ad("/ailab/user/sunjianle-hdd/integration27/mop/muto/feature_aligned.h5ad")
 adata
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True)
+                    feature_list=None, distribution="ZINB")
 model.setup(hidden_layers = [128,128], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = 2, gamma = 5, lambda_adv = 0, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = True, num_warmup = 0,
@@ -57,7 +57,7 @@ adata.write("/ailab/user/sunjianle-hdd/integration27/mop/muto/feature_aligned_no
 adata = sc.read_h5ad("/ailab/user/sunjianle-hdd/integration27/mop/muto/feature_aligned.h5ad")
 adata
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True)
+                    feature_list=None, distribution="ZINB")
 model.setup(hidden_layers = [128,128], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = 1, gamma = 5, lambda_adv = 5, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = True, num_warmup = 0,

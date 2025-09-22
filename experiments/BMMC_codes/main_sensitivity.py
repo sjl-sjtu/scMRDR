@@ -35,7 +35,7 @@ from module import Integration
 # atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 # feature_list = {"0":rna_hvg,"1":atac_hvg}
 # model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-#                     feature_list=None, count_data=True) #feature_list)
+#                     feature_list=None, distribution="ZINB") #feature_list)
 # model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
 #             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 # model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -51,7 +51,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -67,7 +67,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -83,7 +83,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -99,7 +99,7 @@ adata.write(f"/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/sensitivity/
 # atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 # feature_list = {"0":rna_hvg,"1":atac_hvg}
 # model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-#                     feature_list=None, count_data=True) #feature_list)
+#                     feature_list=None, distribution="ZINB") #feature_list)
 # model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
 #             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 # model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -115,7 +115,7 @@ adata.write(f"/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/sensitivity/
 # atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 # feature_list = {"0":rna_hvg,"1":atac_hvg}
 # model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-#                     feature_list=None, count_data=True) #feature_list)
+#                     feature_list=None, distribution="ZINB") #feature_list)
 # model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
 #             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 # model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -131,7 +131,7 @@ adata.write(f"/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/sensitivity/
 # atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 # feature_list = {"0":rna_hvg,"1":atac_hvg}
 # model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-#                     feature_list=None, count_data=True) #feature_list)
+#                     feature_list=None, distribution="ZINB") #feature_list)
 # model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
 #             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 # model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -147,7 +147,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -163,7 +163,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -179,7 +179,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -195,7 +195,7 @@ adata.write(f"/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/sensitivity/
 # atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 # feature_list = {"0":rna_hvg,"1":atac_hvg}
 # model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-#                     feature_list=None, count_data=True) #feature_list)
+#                     feature_list=None, distribution="ZINB") #feature_list)
 # model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
 #             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 # model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -211,7 +211,7 @@ adata.write(f"/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/sensitivity/
 # atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 # feature_list = {"0":rna_hvg,"1":atac_hvg}
 # model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-#                     feature_list=None, count_data=True) #feature_list)
+#                     feature_list=None, distribution="ZINB") #feature_list)
 # model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
 #             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 # model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -224,7 +224,7 @@ beta, gamma, lambda_adv = 5, 10, 10
 adata = sc.read_h5ad("/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/feature_aligned.h5ad")
 adata
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True)
+                    feature_list=None, distribution="ZINB")
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -241,7 +241,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -257,7 +257,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -273,7 +273,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -289,7 +289,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -305,7 +305,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -318,7 +318,7 @@ beta, gamma, lambda_adv = 5, 5, 5
 adata = sc.read_h5ad("/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/feature_aligned.h5ad")
 adata
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True)
+                    feature_list=None, distribution="ZINB")
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -331,7 +331,7 @@ beta, gamma, lambda_adv = 2, 10, 5
 adata = sc.read_h5ad("/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/feature_aligned.h5ad")
 adata
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True)
+                    feature_list=None, distribution="ZINB")
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -344,7 +344,7 @@ beta, gamma, lambda_adv = 2, 5, 10
 adata = sc.read_h5ad("/home/bingxing2/ailab/group/ai4bio/sunjianle/mop/BMMC/feature_aligned.h5ad")
 adata
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True)
+                    feature_list=None, distribution="ZINB")
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -360,7 +360,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
@@ -376,7 +376,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg}
 model = Integration(data=adata, layer="counts", modality_key="modality", batch_key="batch", 
-                    feature_list=None, count_data=True) #feature_list)
+                    feature_list=None, distribution="ZINB") #feature_list)
 model.setup(hidden_layers = [500,500], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = beta, gamma = gamma, lambda_adv = lambda_adv, dropout_rate=0.2)
 model.train(epoch_num = 100, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,

@@ -33,7 +33,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 prot_hvg = np.where(adata.var_names.isin(adata.uns['prot_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg,"2":prot_hvg}
-model = Integration(data=adata, layer = 'counts', modality_key="modality",count_data=True, 
+model = Integration(data=adata, layer = 'counts', modality_key="modality",distribution="ZINB", 
                     batch_key="batch", feature_list=feature_list)
 model.setup(hidden_layers = [128,128], latent_dim_shared = 20, latent_dim_specific = 20, 
             beta = 5, gamma = 0, lambda_adv = 10, dropout_rate=0.5)
@@ -49,7 +49,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 prot_hvg = np.where(adata.var_names.isin(adata.uns['prot_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg,"2":prot_hvg}
-model = Integration(data=adata, layer = 'counts', modality_key="modality",count_data=True, 
+model = Integration(data=adata, layer = 'counts', modality_key="modality",distribution="ZINB", 
                     batch_key="batch", feature_list=feature_list)
 model.setup(hidden_layers = [128,128], latent_dim_shared = 20, latent_dim_specific = 20, 
             beta = 5, gamma = 10, lambda_adv = 0, dropout_rate=0.5)
@@ -65,7 +65,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 prot_hvg = np.where(adata.var_names.isin(adata.uns['prot_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg,"2":prot_hvg}
-model = Integration(data=adata, layer = 'counts', modality_key="modality",count_data=True, 
+model = Integration(data=adata, layer = 'counts', modality_key="modality",distribution="ZINB", 
                     batch_key="batch", feature_list=feature_list)
 model.setup(hidden_layers = [128,128], latent_dim_shared = 20, latent_dim_specific = 20, 
             beta = 1, gamma = 10, lambda_adv = 10, dropout_rate=0.5)
@@ -81,7 +81,7 @@ rna_hvg = np.where(adata.var_names.isin(adata.uns['rna_hvg']))[0].tolist()
 atac_hvg = np.where(adata.var_names.isin(adata.uns['atac_hvg']))[0].tolist()
 prot_hvg = np.where(adata.var_names.isin(adata.uns['prot_hvg']))[0].tolist()
 feature_list = {"0":rna_hvg,"1":atac_hvg,"2":prot_hvg}
-model = Integration(data=adata, layer = 'counts', modality_key="modality",count_data=True, 
+model = Integration(data=adata, layer = 'counts', modality_key="modality",distribution="ZINB", 
                     batch_key="batch", feature_list=None)
 model.setup(hidden_layers = [128,128], latent_dim_shared = 20, latent_dim_specific = 20, 
             beta = 5, gamma = 10, lambda_adv = 10, dropout_rate=0.5)
