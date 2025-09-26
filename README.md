@@ -12,5 +12,5 @@ We implement a scalable and flexible generative framework called single-cell Mul
 
 * TBD
 
-## Reference
+## Citation
 Jianle Sun, Chaoqi Liang, Ran Wei, Peng Zheng, LEI BAI, Wanli Ouyang, Hongliang Yan, Peng Ye. scMRDR: A scalable and flexible framework for unpaired single-cell multi-omics data integration. The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS), 2025.
