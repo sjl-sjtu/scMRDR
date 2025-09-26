@@ -5,13 +5,12 @@
 
 We implement a scalable and flexible generative framework called single-cell Multi-omics Regularized Disentangled Representations (scMRDR) for unpaired multi-omics integration. The manuscript has been accepted as a spotlight paper on The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS 2025).
 
-* PyPI package: https://pypi.org/project/scMRDR/
 * Free software: GPL-3.0 License
-* Documentation: https://scMRDR.readthedocs.io.
+* Documentation:
 
 ## Tutorials
 
-* TODO
+* TBD
 
 ## Reference
-
+Jianle Sun, Chaoqi Liang, Ran Wei, Peng Zheng, LEI BAI, Wanli Ouyang, Hongliang Yan, Peng Ye. scMRDR: A scalable and flexible framework for unpaired single-cell multi-omics data integration. The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS), 2025.
