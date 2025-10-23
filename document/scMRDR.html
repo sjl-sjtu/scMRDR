@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API &mdash; scMRDR  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            scMRDR
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-scMRDR">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scMRDR.data">scMRDR.data module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.data.CombinedDataset"><code class="docutils literal notranslate"><span class="pre">CombinedDataset</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scMRDR.loss">scMRDR.loss module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.loss.ZINBLoss"><code class="docutils literal notranslate"><span class="pre">ZINBLoss</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.loss.isometric_loss"><code class="docutils literal notranslate"><span class="pre">isometric_loss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.loss.klLoss"><code class="docutils literal notranslate"><span class="pre">klLoss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.loss.klLoss_prior"><code class="docutils literal notranslate"><span class="pre">klLoss_prior()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.loss.mseLoss"><code class="docutils literal notranslate"><span class="pre">mseLoss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scMRDR.model">scMRDR.model module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.model.Decoder"><code class="docutils literal notranslate"><span class="pre">Decoder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.model.EmbeddingNet"><code class="docutils literal notranslate"><span class="pre">EmbeddingNet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.model.Encoder"><code class="docutils literal notranslate"><span class="pre">Encoder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.model.MSEDecoder"><code class="docutils literal notranslate"><span class="pre">MSEDecoder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.model.ModalityDiscriminator"><code class="docutils literal notranslate"><span class="pre">ModalityDiscriminator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.model.NBDecoder"><code class="docutils literal notranslate"><span class="pre">NBDecoder</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scMRDR.module">scMRDR.module module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.module.Integration"><code class="docutils literal notranslate"><span class="pre">Integration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.module.to_dense_array"><code class="docutils literal notranslate"><span class="pre">to_dense_array()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scMRDR.train">scMRDR.train module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.train.EarlyStopping"><code class="docutils literal notranslate"><span class="pre">EarlyStopping</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.train.inference_model"><code class="docutils literal notranslate"><span class="pre">inference_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.train.train_model"><code class="docutils literal notranslate"><span class="pre">train_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scMRDR.train.validate_model"><code class="docutils literal notranslate"><span class="pre">validate_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">scMRDR</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API</a></li>
+      <li class="breadcrumb-item active">API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/scMRDR.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api">
+<h1>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<section id="module-scMRDR">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scMRDR" title="Link to this heading"></a></h2>
+<p>A package to integrate unpaired multi-omics single-cell data via single-cell Multi-omics Regularized Disentangled Representations.</p>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-scMRDR.data">
+<span id="scmrdr-data-module"></span><h2>scMRDR.data module<a class="headerlink" href="#module-scMRDR.data" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.data.CombinedDataset">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.data.</span></span><span class="sig-name descname"><span class="pre">CombinedDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.data.CombinedDataset" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
+<p>Dataset for combined data.
+:param X: (n, d) feature matrix
+:param b: (n, ) covariates like batches
+:param m: (n, ) one-hot encoded modality index
+:param i: (n, ) index to indicate which masked-feature group the sample belongs to</p>
+</dd></dl>
+
+</section>
+<section id="module-scMRDR.loss">
+<span id="scmrdr-loss-module"></span><h2>scMRDR.loss module<a class="headerlink" href="#module-scMRDR.loss" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.loss.ZINBLoss">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.loss.</span></span><span class="sig-name descname"><span class="pre">ZINBLoss</span></span><a class="headerlink" href="#scMRDR.loss.ZINBLoss" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Zero-Inflated Negative Binomial Loss
+This loss function is used for modeling count data with excess zeros.
+It combines a zero-inflated component with a negative binomial distribution.
+:param x: observed count data (batch_size, num_features)
+:param rho: mean parameter of the negative binomial distribution (batch_size, num_features)
+:param dispersion: dispersion parameter of the negative binomial distribution (batch_size, num_features)
+:param pi: zero-inflation probability (batch_size, num_features)
+:param s: scaling factor (batch_size, num_features)
+:param mask: optional mask to ignore certain elements in the loss computation (batch_size, num_features)
+:param eps: small value to avoid log(0) (default: 1e-8)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mean_loss</strong> – mean loss value across the batch</p>
+</dd>
+</dl>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.loss.ZINBLoss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispersion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.loss.ZINBLoss.forward" title="Link to this definition"></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.loss.isometric_loss">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.loss.</span></span><span class="sig-name descname"><span class="pre">isometric_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_prime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.loss.isometric_loss" title="Link to this definition"></a></dt>
+<dd><p>Compute Isometric Loss while preserving the structure within each class separately.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Feature matrix in the original space (batch_size, feature_dim)</p></li>
+<li><p><strong>X_prime</strong> – Feature matrix in the latent space (batch_size, latent_dim)</p></li>
+<li><p><strong>m</strong> – One-hot encoded class labels (batch_size, num_classes)</p></li>
+<li><p><strong>p</strong> – Norm type for distance computation (default: Euclidean distance, p=2)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>loss</strong> – Isometric Loss (Mean Squared Error between pairwise distances within each class)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.loss.klLoss">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.loss.</span></span><span class="sig-name descname"><span class="pre">klLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logvar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.loss.klLoss" title="Link to this definition"></a></dt>
+<dd><p>Compute KL divergence between q(z|x) ~ N(mu, exp(logvar)) and p(z) ~ N(0, 1).
+:param mu: Mean of q(z|x) (batch_size, latent_dim)
+:param logvar: Log variance of q(z|x) (batch_size, latent_dim)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>- KL divergence for each sample in the batch</strong> (<em>scalar</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.loss.klLoss_prior">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.loss.</span></span><span class="sig-name descname"><span class="pre">klLoss_prior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logvar_q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logvar_p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.loss.klLoss_prior" title="Link to this definition"></a></dt>
+<dd><p>Compute KL(q || p) for two Gaussians q(z|x) ~ N(mu_p, exp(logvar_p)) and p(z) ~ N(mu_q, exp(logvar_q))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu_q</strong> – mean of q</p></li>
+<li><p><strong>logvar_q</strong> – log variance of q</p></li>
+<li><p><strong>mu_p</strong> – mean of p</p></li>
+<li><p><strong>logvar_p</strong> – log variance of p</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>kl</strong> – KL divergence</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.loss.mseLoss">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.loss.</span></span><span class="sig-name descname"><span class="pre">mseLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.loss.mseLoss" title="Link to this definition"></a></dt>
+<dd><p>Mean Squared Error Loss
+:param x: predicted values (batch_size, num_features)
+:param y: target values (batch_size, num_features)
+:param mask: optional mask to ignore certain elements in the loss computation (batch_size, num_features)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mean_loss</strong> – mean squared error loss across the batch</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-scMRDR.model">
+<span id="scmrdr-model-module"></span><h2>scMRDR.model module<a class="headerlink" href="#module-scMRDR.model" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.model.Decoder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.model.</span></span><span class="sig-name descname"><span class="pre">Decoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariate_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[500,</span> <span class="pre">100]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.Decoder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>ZINB Decoder for the VAE model.
+:param device: Device to run the model on.
+:type device: torch.device
+:param input_dim: Dimension of the input data.
+:type input_dim: int
+:param covariate_dim: Dimension of the batch size.
+:type covariate_dim: int
+:param modality_num: Number of modalities.
+:type modality_num: int
+:param layer_dims: List of hidden layer dimensions.
+:type layer_dims: list
+:param latent_dim: Dimension of the latent space.
+:type latent_dim: int
+:param dropout_rate: Dropout rate for regularization.
+:type dropout_rate: float</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.Decoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispersion_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gene-modality'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.Decoder.forward" title="Link to this definition"></a></dt>
+<dd><p>Forward pass through the decoder.
+:param z: Latent variable tensor of shape (batch_size, latent_dim).
+:type z: torch.Tensor
+:param b: Batch information tensor of shape (batch_size, covariate_dim).
+:type b: torch.Tensor
+:param m: Modality information tensor of shape (batch_size, modality_num).
+:type m: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rho</strong> (<em>torch.Tensor</em>) – Mean of the output distribution.</p></li>
+<li><p><strong>dispersion</strong> (<em>torch.Tensor</em>) – Dispersion parameter of the output distribution.</p></li>
+<li><p><strong>pi</strong> (<em>torch.Tensor</em>) – Dropout probabilities for the output distribution.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.model.EmbeddingNet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.model.</span></span><span class="sig-name descname"><span class="pre">EmbeddingNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariate_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[500,</span> <span class="pre">100]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim_shared</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim_specific</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_adv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feat_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZINB'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_covariates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.EmbeddingNet" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Models to get the unified latent embeddings.
+:param device: Device to run the model on.
+:type device: torch.device
+:param input_dim: Dimension of the input data.
+:type input_dim: int
+:param modality_num: Number of modalities.
+:type modality_num: int
+:param covariate_dim: Dimension of the covariates (like sequencing batches).
+:type covariate_dim: int
+:param layer_dims: List of hidden layer dimensions.
+:type layer_dims: list
+:param latent_dim_shared: Dimension of the shared latent space.
+:type latent_dim_shared: int
+:param latent_dim_specific: Dimension of the modality-specific latent space.
+:type latent_dim_specific: int
+:param dropout_rate: Dropout rate for regularization.
+:type dropout_rate: float
+:param beta: Weight for the KL divergence term.
+:type beta: float
+:param gamma: Weight for the isometric loss term.
+:type gamma: float
+:param lambda_adv: Weight for the adversarial loss term.
+:type lambda_adv: float
+:param feat_mask: Feature mask for the input data.
+:type feat_mask: torch.Tensor
+:param distribution: Distribution of the data, can be “ZINB”, “NB”, “Normal”, “Normal_positive”.
+:type distribution: str
+:param encoder_covariates: Whether to include covariates in the encoder.
+:type encoder_covariates: bool
+:param eps: Small value to avoid division by zero in loss calculations.
+:type eps: float</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.EmbeddingNet.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vae'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.EmbeddingNet.forward" title="Link to this definition"></a></dt>
+<dd><p>Forward pass through the embedding network.
+:param x: Input tensor of shape (batch_size, input_dim).
+:type x: torch.Tensor
+:param b: Batch information tensor of shape (batch_size, covariate_dim).
+:type b: torch.Tensor
+:param m: Modality information tensor of shape (batch_size, modality_num).
+:type m: torch.Tensor
+:param i: Mask indicator tensor of shape (batch_size, input_dim).
+:type i: torch.Tensor
+:param stage: Stage of the model, can be “vae”, “discriminator”, or “warmup”.
+:type stage: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu_shared</strong> (<em>torch.Tensor</em>) – Mean of the shared latent variable distribution.</p></li>
+<li><p><strong>mu_specific</strong> (<em>torch.Tensor</em>) – Mean of the specific latent variable distribution.</p></li>
+<li><p><strong>total_loss</strong> (<em>torch.Tensor</em>) – Total loss for the VAE model.</p></li>
+<li><p><strong>loss_dict</strong> (<em>dict</em>) – Dictionary containing individual loss components.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.EmbeddingNet.reparameterize">
+<span class="sig-name descname"><span class="pre">reparameterize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logvar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.EmbeddingNet.reparameterize" title="Link to this definition"></a></dt>
+<dd><p>Reparameterization trick to sample from the latent variable distribution.
+:param mu: Mean of the latent variable distribution.
+:type mu: torch.Tensor
+:param logvar: Log variance of the latent variable distribution.
+:type logvar: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>torch.Tensor</em>) – Sampled latent variable tensor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.EmbeddingNet.sample_sequencing_depth">
+<span class="sig-name descname"><span class="pre">sample_sequencing_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'observed'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.EmbeddingNet.sample_sequencing_depth" title="Link to this definition"></a></dt>
+<dd><p>Sample sequencing depth based on the strategy.
+:param x: Input tensor of shape (batch_size, input_dim).
+:type x: torch.Tensor
+:param strategy: Strategy for sampling sequencing depth, can be “batch_sample” or “observed”.
+:type strategy: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>torch.Tensor</em>) – Sampled sequencing depth tensor of shape (batch_size, 1).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.model.Encoder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.model.</span></span><span class="sig-name descname"><span class="pre">Encoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[500,</span> <span class="pre">100]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.Encoder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Encoder for the VAE model.
+:param device: Device to run the model on.
+:type device: torch.device
+:param input_dim: Dimension of the input data.
+:type input_dim: int
+:param layer_dims: List of hidden layer dimensions.
+:type layer_dims: list
+:param latent_dim: Dimension of the latent space.
+:type latent_dim: int
+:param dropout_rate: Dropout rate for regularization.
+:type dropout_rate: float</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.Encoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.Encoder.forward" title="Link to this definition"></a></dt>
+<dd><p>Forward pass through the encoder.
+:param x: Input tensor of shape (batch_size, input_dim).
+:type x: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>torch.Tensor</em>) – Latent variable tensor of shape (batch_size, latent_dim).</p></li>
+<li><p><strong>mu</strong> (<em>torch.Tensor</em>) – Mean of the latent variable distribution.</p></li>
+<li><p><strong>logvar</strong> (<em>torch.Tensor</em>) – Log variance of the latent variable distribution.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.Encoder.reparameterize">
+<span class="sig-name descname"><span class="pre">reparameterize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logvar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.Encoder.reparameterize" title="Link to this definition"></a></dt>
+<dd><p>Reparameterization trick to sample from the latent variable distribution.
+:param mu: Mean of the latent variable distribution.
+:type mu: torch.Tensor
+:param logvar: Log variance of the latent variable distribution.
+:type logvar: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>torch.Tensor</em>) – Sampled latent variable tensor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.model.MSEDecoder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.model.</span></span><span class="sig-name descname"><span class="pre">MSEDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariate_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[500,</span> <span class="pre">100]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_outputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.MSEDecoder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>MSE Decoder for the VAE model.
+:param device: Device to run the model on.
+:type device: torch.device
+:param input_dim: Dimension of the input data.
+:type input_dim: int
+:param covariate_dim: Dimension of the batch size.
+:type covariate_dim: int
+:param layer_dims: List of hidden layer dimensions.
+:type layer_dims: list
+:param latent_dim: Dimension of the latent space.
+:type latent_dim: int
+:param dropout_rate: Dropout rate for regularization.
+:type dropout_rate: float</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.MSEDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.MSEDecoder.forward" title="Link to this definition"></a></dt>
+<dd><p>Forward pass through the decoder.
+:param z: Latent variable tensor of shape (batch_size, latent_dim).
+:type z: torch.Tensor
+:param b: Batch information tensor of shape (batch_size, covariate_dim).
+:type b: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rho</strong> (<em>torch.Tensor</em>) – Mean of the output distribution.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.model.ModalityDiscriminator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.model.</span></span><span class="sig-name descname"><span class="pre">ModalityDiscriminator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_modalities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[128,</span> <span class="pre">128]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.ModalityDiscriminator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Discriminator for modality classification.
+:param z_dim: Dimension of the input latent space.
+:type z_dim: int
+:param num_modalities: Number of modalities to classify.
+:type num_modalities: int
+:param layer_dims: List of hidden layer dimensions.
+:type layer_dims: list
+:param dropout_rate: Dropout rate for regularization.
+:type dropout_rate: float</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.ModalityDiscriminator.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.ModalityDiscriminator.forward" title="Link to this definition"></a></dt>
+<dd><p>Forward pass through the discriminator.
+:param z: Input tensor of shape (batch_size, z_dim).
+:type z: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>torch.Tensor</strong> – Output tensor of shape (batch_size, num_modalities).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.model.NBDecoder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.model.</span></span><span class="sig-name descname"><span class="pre">NBDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariate_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[500,</span> <span class="pre">100]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.NBDecoder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>NB Decoder for the VAE model.
+:param device: Device to run the model on.
+:type device: torch.device
+:param input_dim: Dimension of the input data.
+:type input_dim: int
+:param covariate_dim: Dimension of the batch size.
+:type covariate_dim: int
+:param modality_num: Number of modalities.
+:type modality_num: int
+:param layer_dims: List of hidden layer dimensions.
+:type layer_dims: list
+:param latent_dim: Dimension of the latent space.
+:type latent_dim: int
+:param dropout_rate: Dropout rate for regularization.
+:type dropout_rate: float</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.model.NBDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispersion_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gene-modality'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.model.NBDecoder.forward" title="Link to this definition"></a></dt>
+<dd><p>Forward pass through the decoder.
+:param z: Latent variable tensor of shape (batch_size, latent_dim).
+:type z: torch.Tensor
+:param b: Batch information tensor of shape (batch_size, covariate_dim).
+:type b: torch.Tensor
+:param m: Modality information tensor of shape (batch_size, modality_num).
+:type m: torch.Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rho</strong> (<em>torch.Tensor</em>) – Mean of the output distribution.</p></li>
+<li><p><strong>dispersion</strong> (<em>torch.Tensor</em>) – Dispersion parameter of the output distribution.</p></li>
+<li><p><strong>pi</strong> (<em>torch.Tensor</em>) – Dropout probabilities for the output distribution.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-scMRDR.module">
+<span id="scmrdr-module-module"></span><h2>scMRDR.module module<a class="headerlink" href="#module-scMRDR.module" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.module.Integration">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.module.</span></span><span class="sig-name descname"><span class="pre">Integration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'modality'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZINB'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.module.Integration" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Integration class.
+:param data: AnnData object
+:param layer: str, layer name in adata.layers containing the data to be integrated
+:param modality_key: str, key in adata.obs for modality information
+:param batch_key: str, key in adata.obs for batch information
+:param distribution: str, distribution of the data, can be “ZINB”, “NB”, “Normal”, “Normal_positive”
+:param feature_list: distionary, containing unmasked feature indices for each mask group (by default, modality). Default is None, indicating all features are unmasked.
+:param mask_key: str, key in adata.obs to indicate mask information, corresponding to feature_list. Default is None, indicating modality_key will be used.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.module.Integration.get_adata">
+<span class="sig-name descname"><span class="pre">get_adata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.module.Integration.get_adata" title="Link to this definition"></a></dt>
+<dd><p>Get the AnnData object with latent embeddings.
+:Returns: <strong>AnnData object with latent embeddings in obsm.</strong></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.module.Integration.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.module.Integration.inference" title="Link to this definition"></a></dt>
+<dd><p>Inference the model.
+:param n_samples: int, number of samples to average in reparametrization trick
+:param dataset: dataset to use for inference
+:param batch_size: int, batch size
+:param update: bool, whether to update the latent embeddings in the adata
+:param returns: bool, whether to return the results, including latent shared, latent specific</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.module.Integration.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[100,</span> <span class="pre">50]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim_shared</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dim_specific</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_adv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.module.Integration.setup" title="Link to this definition"></a></dt>
+<dd><p>Setup the model.
+:param hidden_layers: list, hidden layers dimensions of the model
+:param latent_dim_shared: int, latent dimension of the shared latent space
+:param latent_dim_specific: int, latent dimension of the specific latent space
+:param dropout_rate: float, dropout rate in neural network
+:param beta: float, beta parameter for the beta distribution
+:param gamma: float, gamma parameter for the gamma distribution
+:param lambda_adv: float, lambda parameter for the adversarial loss
+:param device: device to train the model. Default is None, indicating GPU will be used if available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scMRDR.module.Integration.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accumulation_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptlr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_prop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_warmup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensorboard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.module.Integration.train" title="Link to this definition"></a></dt>
+<dd><p>Train the model.
+:param epoch_num: int, number of epochs
+:param batch_size: int, batch size
+:param lr: float, learning rate
+:param accumulation_steps: int, number of steps to accumulate gradients
+:param adaptlr: bool, whether to adapt learning rate
+:param valid_prop: float, proportion of data to use for validation
+:param num_warmup: int, number of warmup epochs
+:param early_stopping: bool, whether to use early stopping
+:param patience: int, patience for early stopping
+:param tensorboard: bool, whether to use tensorboard
+:param savepath: str, path to save the tensorboard logs
+:param random_state: int, random seed</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.module.to_dense_array">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.module.</span></span><span class="sig-name descname"><span class="pre">to_dense_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.module.to_dense_array" title="Link to this definition"></a></dt>
+<dd><p>Convert input to a dense numpy array.
+:param x: Input data, can be a sparse matrix, numpy array, or other types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Dense numpy array.</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-scMRDR.train">
+<span id="scmrdr-train-module"></span><h2>scMRDR.train module<a class="headerlink" href="#module-scMRDR.train" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="scMRDR.train.EarlyStopping">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scMRDR.train.</span></span><span class="sig-name descname"><span class="pre">EarlyStopping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.train.EarlyStopping" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Early stopping for training.
+:param patience: int, patience for early stopping
+:param delta: float, delta for early stopping
+:param verbose: bool, whether to print early stopping information</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.train.inference_model">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.train.</span></span><span class="sig-name descname"><span class="pre">inference_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.train.inference_model" title="Link to this definition"></a></dt>
+<dd><p>Inference the model.
+:param device: device to inference the model
+:param inference_dataset: inference dataset
+:param model: model to inference
+:param batch_size: batch size</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.train.train_model">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.train.</span></span><span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accumulation_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_warmup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adaptlr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.train.train_model" title="Link to this definition"></a></dt>
+<dd><p>Train the model.
+:param device: device to train the model
+:param writer: writer to write the training progress
+:param train_dataset: train dataset
+:param validate_dataset: validate dataset
+:param model: model to train
+:param epoch_num: number of epochs
+:param batch_size: batch size
+:param num_batch: number of batches
+:param lr: learning rate
+:param accumulation_steps: number of steps to accumulate gradients
+:param num_warmup: number of warmup epochs
+:param adaptlr: whether to adapt learning rate
+:param early_stopping: whether to use early stopping
+:param patience: patience for early stopping</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scMRDR.train.validate_model">
+<span class="sig-prename descclassname"><span class="pre">scMRDR.train.</span></span><span class="sig-name descname"><span class="pre">validate_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scMRDR.train.validate_model" title="Link to this definition"></a></dt>
+<dd><p>Validate the model.
+:param device: device to validate the model
+:param validate_dataset: validate dataset
+:param model: model to validate
+:param batch_size: batch size</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Jianle Sun.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
