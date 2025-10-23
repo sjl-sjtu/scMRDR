@@ -12,7 +12,7 @@ We implement a scalable and flexible generative framework called single-cell Mul
 
 #### Tnstallation
 ```
-git clone
+git clone https://github.com/sjl-sjtu/scMRDR.git
 cd scMRDR/src
 pip install -e .
 ```
