@@ -10,7 +10,7 @@ We implement a scalable and flexible generative framework called single-cell Mul
 
 ## Tutorials
 
-#### Tnstallation
+#### Installation
 ```
 git clone https://github.com/sjl-sjtu/scMRDR.git
 cd scMRDR
