@@ -15,7 +15,6 @@ pip install -e .
 ```
 
 #### Examples
-* TBD
 ```
 import scanpy as sc
 import anndata as ad
