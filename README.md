@@ -34,7 +34,7 @@ model = Integration(data=adata, modality_key="modality", layer="count", batch_ke
 model.setup(hidden_layers = [512,512], latent_dim_shared = 20, latent_dim_specific=20, 
             beta = 2, gamma = 5, lambda_adv = 5, dropout_rate=0.2)
 model.train(epoch_num = 200, batch_size = 128, lr = 1e-3, adaptlr = False, num_warmup = 0,
-            early_stopping = True, valid_prop = 0.1, patience=10) #, weighted=False
+            early_stopping = True, valid_prop = 0.1, weighted=False, patience=10)
 model.inference(n_samples=1,update=True,returns=False)
 adata = model.get_adata() # The integrated embeddings are stored in adata.obsm["latent_shared"]
 
