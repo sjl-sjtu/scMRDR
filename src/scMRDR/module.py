@@ -16,6 +16,7 @@ from scipy.sparse import lil_matrix,csr_matrix,issparse
 import scanpy as sc
 from sklearn.model_selection import train_test_split
 import ot
+from sklearn.neighbors import NearestNeighbors
 
 def to_dense_array(x):
     """
@@ -44,7 +45,7 @@ class Integration:
         feature_list: distionary, containing unmasked feature indices for each mask group (by default, modality). Default is None, indicating all features are unmasked.
         mask_key: str, key in adata.obs to indicate mask information, corresponding to feature_list. Default is None, indicating modality_key will be used.
     '''
-    def __init__(self, data, layer=None, modality_key="modality", batch_key=None, # celltype_key=None, 
+    def __init__(self, data, layer=None, modality_key="modality", batch_key=None, celltype_key=None, 
                  distribution = "ZINB", mask_key=None, feature_list=None):
         super(Integration,self).__init__()
         if isinstance(data, list) & isinstance(data[0], ad.AnnData):
@@ -64,14 +65,14 @@ class Integration:
         self.modality_ordered = [label for label in label_encoder.classes_]
         self.modality = onehot_encoder.fit_transform(self.modality.reshape(-1, 1))
 
-        # if celltype_key is None:
-        #     self.celltype = None
-        #     self.celltype_ordered = None
-        # else:
-        #     self.celltype_label = self.adata.obs[celltype_key].to_numpy()
-        #     self.celltype = label_encoder.fit_transform(self.celltype_label)
-        #     self.celltype_ordered = [label for label in label_encoder.classes_]
-        #     self.celltype = onehot_encoder.fit_transform(self.celltype.reshape(-1, 1))    
+        if celltype_key is None:
+            self.celltype = None
+            self.celltype_ordered = None
+        else:
+            self.celltype_label = self.adata.obs[celltype_key].to_numpy()
+            self.celltype = label_encoder.fit_transform(self.celltype_label)
+            self.celltype_ordered = [label for label in label_encoder.classes_]
+            self.celltype = onehot_encoder.fit_transform(self.celltype.reshape(-1, 1))    
          
         if batch_key is None:
             self.covariates = None
@@ -84,10 +85,10 @@ class Integration:
         
         self.modality_num = self.modality.shape[1]
         
-        # if self.celltype is not None:
-        #     self.celltype_num = self.celltype.shape[1]
-        # else:
-        #     self.celltype_num = 0
+        if self.celltype is not None:
+            self.celltype_num = self.celltype.shape[1]
+        else:
+            self.celltype_num = 0
         
         if self.covariates is not None:
             self.covariates_dim = self.covariates.shape[1]
@@ -158,10 +159,11 @@ class Integration:
                     latent_dim_shared=self.latent_dim_shared, latent_dim_specific=self.latent_dim_specific,dropout_rate = self.dropout_rate, 
                     beta=self.beta, gamma = self.gamma, lambda_adv = self.lambda_adv,
                     feat_mask = self.feat_mask, distribution = self.distribution).to(self.device)
-        self.train_dataset = CombinedDataset(self.data,self.covariates,self.modality,self.mask)
+        self.train_dataset = CombinedDataset(self.data,self.covariates,self.modality,self.mask, self.celltype)
     
     def train(self,epoch_num = 200, batch_size = 64, lr = 1e-5, accumulation_steps = 1, 
               adaptlr = False, valid_prop = 0.1, num_warmup = 0, early_stopping = True, patience = 10,
+              weighted = False,
               tensorboard = False, savepath = "./", random_state=42):
         '''
         Train the model.
@@ -175,6 +177,7 @@ class Integration:
             num_warmup: int, number of warmup epochs
             early_stopping: bool, whether to use early stopping
             patience: int, patience for early stopping
+            weighted: bool, whether to use weighted sampling based on modality sizes
             tensorboard: bool, whether to use tensorboard
             savepath: str, path to save the tensorboard logs
             random_state: int, random seed
@@ -203,11 +206,21 @@ class Integration:
         self.num_batch = len(train_dataset)//self.batch_size
         
         print("Training start!")
-        train_model(self.device, self.writer, train_dataset, valid_dataset,
-                    self.model, self.epoch_num, self.batch_size, 
-                    self.num_batch, self.lr, accumulation_steps = self.accumulation_steps, 
-                    adaptlr = self.adaptlr, num_warmup = num_warmup, early_stopping = early_stopping,
-                    patience = patience)
+        if weighted:
+            weights = 1.0 / np.bincount(self.modality.argmax(-1))
+            sample_weights = weights[self.modality.argmax(-1)]
+            sample_weights = sample_weights[train_indices]
+            train_model(self.device, self.writer, train_dataset, valid_dataset,
+                        self.model, self.epoch_num, self.batch_size,
+                        self.num_batch, self.lr, accumulation_steps=self.accumulation_steps,
+                        adaptlr=self.adaptlr, num_warmup=num_warmup, early_stopping=early_stopping,
+                        patience=patience, sample_weights=sample_weights)
+        else:
+            train_model(self.device, self.writer, train_dataset, valid_dataset,
+                        self.model, self.epoch_num, self.batch_size, 
+                        self.num_batch, self.lr, accumulation_steps = self.accumulation_steps, 
+                        adaptlr = self.adaptlr, num_warmup = num_warmup, early_stopping = early_stopping,
+                        patience = patience)
         if tensorboard:
             self.writer.close()
         print("Training finished!")
@@ -247,7 +260,109 @@ class Integration:
             # self.adata.obs['estimated_library_size'] = self.library_size
             print('All results recorded in adata.')
         if returns:
-            return self.z_shared,self.z_specific #,self.rho,self.dispersion,self.pi,self.library_size  
+            return self.z_shared,self.z_specific #,self.rho,self.dispersion,self.pi,self.library_size
+
+    def predict(self,predict_modality,batch_size=None,strategy="observed",library_size=None,method="ot",k=10): # dataset=None,inference=False,
+        '''
+        Predict the missing modality data.
+        Args:
+            predict_modality: str, modality to predict
+            batch_size: int, batch size
+            strategy: str, strategy to predict the missing modality. Options (default: "observed"):
+                - "observed": use the observed data from other modalities to predict the missing modality.
+                - "latent": use the latent embeddings to predict the missing modality.
+            library_size: array, library size for generation, default is None, indicating using the estimated library size from the model
+            method: str, method to use for prediction, can be "ot" or "knn"
+            k: int, number of neighbors for knn method
+        Returns:
+            x_pred: predicted data for the missing modality
+        '''
+        # if dataset is None:
+        #     dataset = self.train_dataset
+        if batch_size is None:
+            batch_size = self.batch_size
+        # if inference:
+        #     z_shared,z_specific = self.inference(n_samples=1, dataset=dataset, batch_size=batch_size, update=False, returns=True)
+        # else:
+        #     z_shared,z_specific = self.z_shared,self.z_specific
+        z_shared,z_specific = self.z_shared,self.z_specific
+        curr_index = self.modality_label == predict_modality # index of measurements with the specified modality
+        impt_index = self.modality_label != predict_modality
+        z_shared_curr = z_shared[curr_index,:]
+        z_specific_curr = z_specific[curr_index,:]
+        z_shared_impt = z_shared[impt_index,:]
+        # z_specific_impt = z_specific[impt_index,:]
+
+        # z_concat_curr = np.concatenate((z_shared_curr,z_specific_curr), axis=1)
+        
+        if strategy == "observed":
+            x_curr = self.data[curr_index,:]
+
+            if method == "ot":
+                # coupling matrix
+                a = ot.unif(z_shared_impt.shape[0])
+                b = ot.unif(z_shared_curr.shape[0])
+                M = ot.dist(z_shared_impt, z_shared_curr, metric='euclidean')
+                # W = ot.sinkhorn(a, b, M, reg=0.01)
+                W = ot.emd(a, b, M)
+                W = W/W.sum(axis=1,keepdims=True)
+                x_pred = np.dot(W,x_curr)
+            elif method == "knn":
+                nbrs = NearestNeighbors(n_neighbors=k, algorithm='ball_tree').fit(z_shared_curr)
+                distances, indices = nbrs.kneighbors(z_shared_impt)
+                # weighted average
+                weights = 1 / (distances + 1e-5)
+                weights = weights / np.sum(weights, axis=1, keepdims=True)
+                x_pred = np.array([np.sum(x_curr[indices[i]] * weights[i][:, np.newaxis], axis=0) for i in range(indices.shape[0])])
+            else:
+                raise ValueError("Unknown method!")  
+        elif strategy == "latent":
+            z_concat_curr = np.concatenate((z_shared_curr,z_specific_curr), axis=1)
+            # z_specific_impt = z_specific[impt_index,:]
+            # z_specific_curr_mean = np.tile(np.mean(z_specific_curr, axis=0, keepdims=True), (z_shared_impt.shape[0], 1))
+            # z_concat = np.concatenate((z_shared_impt, z_specific_curr_mean), axis=1)
+            if method == "ot":
+                # coupling matrix
+                a = ot.unif(z_shared_impt.shape[0])
+                b = ot.unif(z_shared_curr.shape[0])
+                M = ot.dist(z_shared_impt, z_shared_curr, metric='euclidean')
+                # W = ot.sinkhorn(a, b, M, reg=0.01)
+                W = ot.emd(a, b, M)
+                W = W/W.sum(axis=1,keepdims=True)
+                # z_specific_pred = np.dot(W, z_specific_curr)
+                # z_concat = np.concatenate((z_shared_impt, z_specific_pred), axis=1)
+                z_concat = np.dot(W, z_concat_curr)
+            # elif method == "mean":
+            #     z_specific_curr_mean = np.tile(np.mean(z_specific_curr, axis=0, keepdims=True), (z_shared_impt.shape[0], 1))
+            #     z_concat = np.concatenate((z_shared_impt, z_specific_curr_mean), axis=1)
+            elif method == "knn":
+                nbrs = NearestNeighbors(n_neighbors=k, algorithm='ball_tree').fit(z_shared_curr)
+                distances, indices = nbrs.kneighbors(z_shared_impt)
+                # weighted average
+                weights = 1 / (distances + 1e-5)
+                weights = weights / np.sum(weights, axis=1, keepdims=True)
+                # x_pred = np.array([np.sum(x_curr[indices[i]] * weights[i][:, np.newaxis], axis=0) for i in range(indices.shape[0])])
+                # z_specific_pred = np.array([np.sum(z_specific_curr[indices[i]] * weights[i][:, np.newaxis], axis=0) for i in range(indices.shape[0])])
+                # # simple average
+                # z_specific_pred = np.array([np.mean(z_specific_curr[indices[i]], axis=0) for i in range(indices.shape[0])])
+                z_concat = np.array([np.sum(z_concat_curr[indices[i]] * weights[i][:, np.newaxis], axis=0) for i in range(indices.shape[0])])               
+            #     z_concat = np.concatenate((z_shared_impt, z_specific_pred), axis=1)
+
+            else:
+                raise ValueError("Unknown method!")    
+            if self.covariates is not None:
+                covariates = self.covariates[impt_index,:]
+            else:
+                covariates = None
+            modality = np.tile(self.modality[curr_index,:][0,:], (z_concat.shape[0], 1))
+            x_pred = self.generate_from_latent(z_concat,
+                                                modality,
+                                                covariates=covariates,
+                                                library_size=library_size,
+                                                n_samples=1)
+        else:
+            raise ValueError("Unknown strategy!")  
+        return x_pred  
     
     def get_adata(self):
         '''
@@ -256,6 +371,6 @@ class Integration:
             AnnData object with latent embeddings in obsm.
         '''
         return self.adata
-            
+    
         
         

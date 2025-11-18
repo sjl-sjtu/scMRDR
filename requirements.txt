@@ -1,8 +1,9 @@
-anndata==0.12.1
-matplotlib==3.10.5
-numpy==2.3.2
-pandas==2.3.1
-scanpy==1.11.4
-scikit_learn==1.7.1
-scipy==1.16.1
+anndata==0.12.6
+matplotlib==3.10.7
+numpy==2.3.5
+pandas==2.3.3
+POT==0.9.5
+scanpy==1.11.5
+scikit_learn==1.7.2
+scipy==1.16.3
 torch==2.3.1+cu121

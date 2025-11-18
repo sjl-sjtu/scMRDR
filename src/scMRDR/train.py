@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from torch import optim
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 import numpy as np
 
 class EarlyStopping:
@@ -45,7 +45,8 @@ class EarlyStopping:
         #     print(f"Validation loss decreased, model saved to {self.path}")
 
 def train_model(device, writer, train_dataset, validate_dataset, model, epoch_num, batch_size, 
-                num_batch, lr, accumulation_steps=1, num_warmup = 0, adaptlr = False, early_stopping=True, patience=25): #inferenceRNA, inferenceATAC, 
+                num_batch, lr, accumulation_steps=1, num_warmup = 0, adaptlr = False, early_stopping=True, patience=25,
+                sample_weights=None): #inferenceRNA, inferenceATAC, 
     '''
     Train the model.
     Args:
@@ -63,9 +64,19 @@ def train_model(device, writer, train_dataset, validate_dataset, model, epoch_nu
         adaptlr: whether to adapt learning rate
         early_stopping: whether to use early stopping
         patience: patience for early stopping
+        sample_weights: sample weights for weighted sampling
     '''
     # load data
-    train_data = DataLoader(train_dataset,batch_size,shuffle=True,drop_last=True,num_workers=4,pin_memory=True)
+    if sample_weights is not None:
+        sample_weights = torch.tensor(sample_weights,dtype=torch.double)
+        sampler = WeightedRandomSampler(
+            weights=sample_weights,
+            num_samples=len(sample_weights),
+            replacement=True
+        )
+        train_data = DataLoader(train_dataset,batch_size,shuffle=False,sampler=sampler,drop_last=True,num_workers=4,pin_memory=True)
+    else:   
+        train_data = DataLoader(train_dataset,batch_size,shuffle=True,drop_last=True,num_workers=4,pin_memory=True)
     # optimizer = optim.Adam(model.parameters(), lr=lr)
     optimizer_vae = torch.optim.Adam(list(model.encoder_shared.parameters()) + 
                                      list(model.encoder_specific.parameters()) + 
@@ -85,8 +96,8 @@ def train_model(device, writer, train_dataset, validate_dataset, model, epoch_nu
         model.train()
         total_loss,recon_loss,kl_z,preserve_loss,adv_loss,total_discri_loss = \
             0,0,0,0,0,0
-        for step, (X,b,m,i) in enumerate(train_data):
-            X,b,m,i = X.to(device),b.to(device),m.to(device), i.to(device)
+        for step, (X,b,m,i,w) in enumerate(train_data):
+            X,b,m,i,w = X.to(device),b.to(device),m.to(device), i.to(device),w.to(device)
             X.requires_grad = True
             b.requires_grad = True
             m.requires_grad = True
@@ -97,7 +108,7 @@ def train_model(device, writer, train_dataset, validate_dataset, model, epoch_nu
 
             if epoch < num_warmup:
                 model.train()
-                _, _, loss, loss_dict = model(X,b,m,i,stage="warmup")
+                _, _, loss, loss_dict = model(X,b,m,i,w,stage="warmup")
                 # with torch.autograd.detect_anomaly():
                 loss.backward() 
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1) 
@@ -125,7 +136,7 @@ def train_model(device, writer, train_dataset, validate_dataset, model, epoch_nu
                 ### === Phase A: Train Discriminator === ###
                 model.eval()
                 model.discriminator.train()
-                discri_loss = model(X,b,m,i, stage="discriminator")
+                discri_loss = model(X,b,m,i,w, stage="discriminator")
                 # with torch.autograd.detect_anomaly():
                 discri_loss.backward()
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1) 
@@ -140,7 +151,7 @@ def train_model(device, writer, train_dataset, validate_dataset, model, epoch_nu
                 ### === Phase B: Train VAE, fool Discriminator === ###
                 model.train()
                 model.discriminator.eval()
-                _, _, loss, loss_dict = model(X,b,m,i,stage="vae")
+                _, _, loss, loss_dict = model(X,b,m,i,w,stage="vae")
                 # with torch.autograd.detect_anomaly():
                 loss.backward() 
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 1) 
@@ -200,9 +211,9 @@ def validate_model(device, validate_dataset, model, batch_size):
     model.eval()
     validate_data = DataLoader(validate_dataset,batch_size,shuffle=False,drop_last=False,num_workers=4,pin_memory=True)
     total_loss= 0
-    for _, (X,b,m,i) in enumerate(validate_data):
-        X,b,m,i = X.to(device),b.to(device),m.to(device), i.to(device)
-        _,_,loss,_ = model(X,b,m,i,stage="vae")
+    for _, (X,b,m,i,w) in enumerate(validate_data):
+        X,b,m,i,w = X.to(device),b.to(device),m.to(device), i.to(device),w.to(device)
+        _,_,loss,_ = model(X,b,m,i,w,stage="vae")
         total_loss+=loss.item()    
     return loss
 
@@ -222,9 +233,9 @@ def inference_model(device, inference_dataset, model, batch_size):
     z2_list = []
     total_loss,recon_loss,kl_z,preserve_loss,adv_loss= \
             0,0,0,0,0
-    for step, (X,b,m,i) in enumerate(inference_data):
-        X,b,m,i = X.to(device),b.to(device),m.to(device), i.to(device)
-        z1,z2,loss,loss_dict = model(X,b,m,i,stage="vae")
+    for step, (X,b,m,i,w) in enumerate(inference_data):
+        X,b,m,i,w = X.to(device),b.to(device),m.to(device), i.to(device),w.to(device)
+        z1,z2,loss,loss_dict = model(X,b,m,i,w,stage="vae")
         z1_list.append(z1.detach().cpu().numpy())
         z2_list.append(z2.detach().cpu().numpy())
         total_loss+=loss.item()

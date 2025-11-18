@@ -109,6 +109,60 @@ class Encoder(nn.Module):
         z = mu + eps * std
         return z
 
+class MSEDecoder(nn.Module):
+    '''
+    MSE Decoder for the VAE model.
+    Args:
+        device (torch.device): Device to run the model on.
+        input_dim (int): Dimension of the input data.
+        covariate_dim (int): Dimension of the batch size.
+        layer_dims (list): List of hidden layer dimensions.
+        latent_dim (int): Dimension of the latent space.
+        dropout_rate (float): Dropout rate for regularization.
+    '''
+    def __init__(self, device, input_dim = 3000, covariate_dim = 1, layer_dims = [500,100], latent_dim = 20,
+                 dropout_rate = 0.5, positive_outputs=True):
+        super(MSEDecoder, self).__init__()
+        
+        self.input_dim = input_dim
+        self.latent_dim = latent_dim
+        self.covariate_dim = covariate_dim
+        
+        # p(x|z,c)
+        layers_xz = []
+        current_dim =  latent_dim + covariate_dim
+        for dim in reversed(layer_dims):
+            layers_xz.append(nn.Linear(current_dim, dim))
+            layers_xz.append(nn.LeakyReLU(0.1))
+            layers_xz.append(nn.BatchNorm1d(dim))
+            layers_xz.append(nn.Dropout(dropout_rate))
+            current_dim = dim
+        
+        self.decoder = nn.Sequential(*layers_xz)   
+        if positive_outputs: 
+            self.mean_layer = nn.Sequential(nn.Linear(layer_dims[0], input_dim),
+                                            nn.Softplus())
+            # self.zero_inflation_rates = nn.Parameter(torch.ones(input_dim) * 0.5) 
+        else:
+            self.mean_layer = nn.Sequential(nn.Linear(layer_dims[0], input_dim)
+                                            # nn.Softplus()
+                                            )
+        
+    def forward(self,z,b):
+        '''
+        Forward pass through the decoder.
+        Args:
+            z (torch.Tensor): Latent variable tensor of shape (batch_size, latent_dim).
+            b (torch.Tensor): Batch information tensor of shape (batch_size, covariate_dim).
+        Returns:
+            rho (torch.Tensor): Mean of the output distribution.
+        '''
+        if self.covariate_dim > 0:
+            z = torch.cat([z, b],dim=1)
+        h = self.decoder(z)
+        rho = self.mean_layer(h) 
+        return rho
+
 class Decoder(nn.Module):
     '''
     ZINB Decoder for the VAE model.
@@ -246,60 +300,6 @@ class NBDecoder(nn.Module):
             dispersion = self.dispersion_layer(h) # gene-cell wise
         pi = torch.zeros_like(rho)
         return rho, dispersion, pi
-    
-class MSEDecoder(nn.Module):
-    '''
-    MSE Decoder for the VAE model.
-    Args:
-        device (torch.device): Device to run the model on.
-        input_dim (int): Dimension of the input data.
-        covariate_dim (int): Dimension of the batch size.
-        layer_dims (list): List of hidden layer dimensions.
-        latent_dim (int): Dimension of the latent space.
-        dropout_rate (float): Dropout rate for regularization.
-    '''
-    def __init__(self, device, input_dim = 3000, covariate_dim = 1, layer_dims = [500,100], latent_dim = 20,
-                 dropout_rate = 0.5, positive_outputs=True):
-        super(MSEDecoder, self).__init__()
-        
-        self.input_dim = input_dim
-        self.latent_dim = latent_dim
-        self.covariate_dim = covariate_dim
-        
-        # p(x|z,c)
-        layers_xz = []
-        current_dim =  latent_dim + covariate_dim
-        for dim in reversed(layer_dims):
-            layers_xz.append(nn.Linear(current_dim, dim))
-            layers_xz.append(nn.LeakyReLU(0.1))
-            layers_xz.append(nn.BatchNorm1d(dim))
-            layers_xz.append(nn.Dropout(dropout_rate))
-            current_dim = dim
-        
-        self.decoder = nn.Sequential(*layers_xz)   
-        if positive_outputs: 
-            self.mean_layer = nn.Sequential(nn.Linear(layer_dims[0], input_dim),
-                                            nn.Softplus())
-            # self.zero_inflation_rates = nn.Parameter(torch.ones(input_dim) * 0.5) 
-        else:
-            self.mean_layer = nn.Sequential(nn.Linear(layer_dims[0], input_dim)
-                                            # nn.Softplus()
-                                            )
-        
-    def forward(self,z,b):
-        '''
-        Forward pass through the decoder.
-        Args:
-            z (torch.Tensor): Latent variable tensor of shape (batch_size, latent_dim).
-            b (torch.Tensor): Batch information tensor of shape (batch_size, covariate_dim).
-        Returns:
-            rho (torch.Tensor): Mean of the output distribution.
-        '''
-        if self.covariate_dim > 0:
-            z = torch.cat([z, b],dim=1)
-        h = self.decoder(z)
-        rho = self.mean_layer(h) 
-        return rho
 
 class EmbeddingNet(nn.Module):
     '''
@@ -309,6 +309,7 @@ class EmbeddingNet(nn.Module):
         input_dim (int): Dimension of the input data.
         modality_num (int): Number of modalities.
         covariate_dim (int): Dimension of the covariates (like sequencing batches).
+        celltype_num (int): Dimension of the cell type information. Default is 0.
         layer_dims (list): List of hidden layer dimensions.
         latent_dim_shared (int): Dimension of the shared latent space.
         latent_dim_specific (int): Dimension of the modality-specific latent space.
@@ -322,7 +323,7 @@ class EmbeddingNet(nn.Module):
         eps (float): Small value to avoid division by zero in loss calculations.
     '''
 
-    def __init__(self, device, input_dim, modality_num, covariate_dim = 1, #celltype_num = 0,
+    def __init__(self, device, input_dim, modality_num, covariate_dim = 1, celltype_num = 0,
                 layer_dims=[500,100], latent_dim_shared=20,
                 latent_dim_specific=20, dropout_rate = 0.5, beta = 2, gamma = 1, lambda_adv = 0.01,
                 feat_mask = None, distribution = "ZINB", # count_data = True, positive_outputs = True,
@@ -338,7 +339,7 @@ class EmbeddingNet(nn.Module):
         self.latent_dim_specific = latent_dim_specific
         self.covariate_dim = covariate_dim
         self.modality_num = modality_num
-        # self.celltype_num = celltype_num
+        self.celltype_num = celltype_num
         self.encoder_covariates = encoder_covariates
         self.gamma = gamma
         self.lambda_adv = lambda_adv
@@ -354,9 +355,11 @@ class EmbeddingNet(nn.Module):
         elif self.distribution == "Normal_positive":
             self.count_data = False
             self.positive_outputs = True
-        
-        self.encoder_shared = Encoder(device, input_dim+covariate_dim*encoder_covariates, layer_dims, latent_dim_shared, dropout_rate)
-        self.encoder_specific = Encoder(device, input_dim+modality_num+covariate_dim*encoder_covariates, layer_dims, latent_dim_specific, dropout_rate)
+
+        self.encoder_shared = Encoder(device, input_dim+covariate_dim*encoder_covariates+self.celltype_num, 
+                                      layer_dims, latent_dim_shared, dropout_rate)
+        self.encoder_specific = Encoder(device, input_dim+modality_num+covariate_dim*encoder_covariates+self.celltype_num, 
+                                        layer_dims, latent_dim_specific, dropout_rate)
         if self.distribution == "ZINB":
             self.decoder = Decoder(device, input_dim, covariate_dim, modality_num, layer_dims, 
                                    latent_dim_shared+latent_dim_specific, dropout_rate)
@@ -366,13 +369,14 @@ class EmbeddingNet(nn.Module):
         else:
             self.decoder = MSEDecoder(device, input_dim, covariate_dim, layer_dims, latent_dim_shared+latent_dim_specific, 
                                       dropout_rate, positive_outputs=self.positive_outputs)
-        self.prior_net_specific = nn.Sequential(nn.Linear(modality_num, 10),
-                                       nn.LeakyReLU(0.1),
-                                       nn.Dropout(dropout_rate),
-                                       nn.Linear(10, 2))  
+            
+        self.prior_net_specific = nn.Sequential(nn.Linear(modality_num + self.celltype_num, 10),
+                                    nn.LeakyReLU(0.1),
+                                    nn.Dropout(dropout_rate),
+                                    nn.Linear(10, 2))
         self.discriminator = ModalityDiscriminator(latent_dim_shared, modality_num, layer_dims=layer_dims, dropout_rate=dropout_rate)   
     
-    def forward(self,x,b,m,i,stage="vae"):
+    def forward(self,x,b,m,i,w,stage="vae"):
         '''
         Forward pass through the embedding network.
         Args:
@@ -380,6 +384,7 @@ class EmbeddingNet(nn.Module):
             b (torch.Tensor): Batch information tensor of shape (batch_size, covariate_dim).
             m (torch.Tensor): Modality information tensor of shape (batch_size, modality_num).
             i (torch.Tensor): Mask indicator tensor of shape (batch_size, input_dim).
+            w (torch.Tensor): Cell type information tensor of shape (batch_size, celltype_num).
             stage (str): Stage of the model, can be "vae", "discriminator", or "warmup".
         Returns:
             mu_shared (torch.Tensor): Mean of the shared latent variable distribution.
@@ -392,13 +397,23 @@ class EmbeddingNet(nn.Module):
             if self.count_data:
                 x = torch.log1p(x)
             
-            prior_mu, prior_logvar = torch.chunk(self.prior_net_specific(m), 2, dim=-1)
-            if self.encoder_covariates:
-                z_shared, mu_shared, logvar_shared = self.encoder_shared(torch.cat([x,b],dim=-1))
-                z_specific, mu_specific, logvar_specific = self.encoder_specific(torch.cat([x,m,b],dim=-1))
+            if self.celltype_num == 0:
+                prior_mu, prior_logvar = torch.chunk(self.prior_net_specific(m), 2, dim=-1)
+                if self.encoder_covariates:
+                    z_shared, mu_shared, logvar_shared = self.encoder_shared(torch.cat([x,b],dim=-1))
+                    z_specific, mu_specific, logvar_specific = self.encoder_specific(torch.cat([x,m,b],dim=-1))
+                else:
+                    z_shared, mu_shared, logvar_shared = self.encoder_shared(x)
+                    z_specific, mu_specific, logvar_specific = self.encoder_specific(torch.cat([x,m],dim=-1))
             else:
-                z_shared, mu_shared, logvar_shared = self.encoder_shared(x)
-                z_specific, mu_specific, logvar_specific = self.encoder_specific(torch.cat([x,m],dim=-1))
+                prior_mu, prior_logvar = torch.chunk(self.prior_net_specific(torch.cat([m,w],dim=-1)), 2, dim=-1)
+                if self.encoder_covariates:
+                    z_shared, mu_shared, logvar_shared = self.encoder_shared(torch.cat([x,b,w],dim=-1))
+                    z_specific, mu_specific, logvar_specific = self.encoder_specific(torch.cat([x,m,b,w],dim=-1))
+                else:
+                    z_shared, mu_shared, logvar_shared = self.encoder_shared(torch.cat([x,w],dim=-1))
+                    z_specific, mu_specific, logvar_specific = self.encoder_specific(torch.cat([x,m,w],dim=-1))
+
             z = torch.cat([z_shared,z_specific],dim=-1)
             if self.count_data:
                 rho,dispersion,pi = self.decoder(z, b, m)

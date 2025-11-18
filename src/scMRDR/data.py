@@ -16,8 +16,9 @@ class CombinedDataset(Dataset):
         b: (n, ) covariates like batches
         m: (n, ) one-hot encoded modality index
         i: (n, ) index to indicate which masked-feature group the sample belongs to
+        w: (n, ) one-hot encoded cell type index
     '''
-    def __init__(self, X, b, m, i):
+    def __init__(self, X, b, m, i, w):
         super(CombinedDataset,self).__init__()
         # self.device = device
         self.X = torch.tensor(X).float()#.to(device)
@@ -28,6 +29,10 @@ class CombinedDataset(Dataset):
             self.b = torch.zeros(self.len).float()#.to(device)
         self.m = torch.tensor(m).float()#.to(device)
         self.i = torch.tensor(i).float()
+        if w is not None:
+            self.w = torch.tensor(w).float()#.to(device)
+        else:
+            self.w = torch.zeros(self.len).float()#.to(device)
         # self.X.requires_grad = True
         # self.b.requires_grad = True
         # self.m.requires_grad = True
@@ -40,5 +45,6 @@ class CombinedDataset(Dataset):
         b_sample = self.b[index]
         m_sample = self.m[index]
         i_sample = self.i[index]
-        
-        return x_sample, b_sample, m_sample, i_sample
+        w_sample = self.w[index]
+
+        return x_sample, b_sample, m_sample, i_sample, w_sample

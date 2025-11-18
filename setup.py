@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="scMRDR", 
-    version="1.0.0",
+    version="1.1.0",
     author="Jianle Sun",
     description="A package to integrate unpaired multi-omics single-cell data via single-cell Multi-omics Regularized Disentangled Representations.",
     # url="https://github.com/sjl-sjtu/perturb_vae", 
@@ -15,7 +15,8 @@ setup(
         "scanpy",
         "scikit_learn",
         "scipy",
-        "torch"
+        "torch",
+        "POT"
     ],
     classifiers=[ 
         "Programming Language :: Python :: 3",
