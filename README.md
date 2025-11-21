@@ -5,6 +5,8 @@ We implement a scalable and flexible generative framework called single-cell Mul
 * Free software: GPL-3.0 License
 * Documentation: https://sjl-sjtu.github.io/scMRDR/
 
+<img width="1988" height="969" alt="models" src="https://github.com/user-attachments/assets/7a4304a4-a8c1-4a1c-87ff-eeb6b8d0bf27" />
+
 ## Tutorials
 
 #### Installation
