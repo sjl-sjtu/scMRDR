@@ -1,6 +1,8 @@
 # scMRDR
 
-We implement a scalable and flexible generative framework called single-cell Multi-omics Regularized Disentangled Representations (scMRDR) for unpaired multi-omics integration. The manuscript has been accepted as a **spotlight** paper on The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS 2025).
+We implement a scalable and flexible generative framework called single-cell Multi-omics Regularized Disentangled Representations (scMRDR) for unpaired multi-omics integration. The manuscript has been accepted as a **spotlight** paper on The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS 2025) [1].
+
+An extended version with more downstream applications and biological analyses such as cross-omics translation, spatial reconstruction and SVG detection, methylation regulation effect assessment via spatial addictive mixed-effect model can be found at [2].
 
 * Free software: GPL-3.0 License
 * Documentation: https://sjl-sjtu.github.io/scMRDR/
@@ -51,7 +53,8 @@ sc.pl.umap(
 ```
 
 ## Citation
-Jianle Sun, Chaoqi Liang, Ran Wei, Peng Zheng, Lei Bai, Wanli Ouyang, Hongliang Yan, Peng Ye. scMRDR: A scalable and flexible framework for unpaired single-cell multi-omics data integration. The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS), 2025.
+[1] Jianle Sun, Chaoqi Liang, Ran Wei, Peng Zheng, Lei Bai, Wanli Ouyang, Hongliang Yan, Peng Ye. scMRDR: A scalable and flexible framework for unpaired single-cell multi-omics data integration. The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS), 2025.
+[2] Sun, Jianle, Chaoqi Liang, Ran Wei, Peng Zheng, Hongliang Yan, Lei Bai, Kun Zhang, Wanli Ouyang, and Peng Ye. "Scalable integration and prediction of unpaired single-cell and spatial multi-omics via regularized disentanglement." bioRxiv (2025).
 
 ## Contact
 Feel free to contact me via jianles@andrew.cmu.edu or sjl-2017@alumni.sjtu.edu.cn if you have any questions.
