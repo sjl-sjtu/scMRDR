@@ -55,7 +55,7 @@ sc.pl.umap(
 ## Citation
 [1] Jianle Sun, Chaoqi Liang, Ran Wei, Peng Zheng, Lei Bai, Wanli Ouyang, Hongliang Yan, Peng Ye. scMRDR: A scalable and flexible framework for unpaired single-cell multi-omics data integration. The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS), 2025.
 
-[2] Sun, Jianle, Chaoqi Liang, Ran Wei, Peng Zheng, Hongliang Yan, Lei Bai, Kun Zhang, Wanli Ouyang, and Peng Ye. "Scalable integration and prediction of unpaired single-cell and spatial multi-omics via regularized disentanglement." bioRxiv (2025).
+[2] Jianle Sun, Chaoqi Liang, Ran Wei, Peng Zheng, Hongliang Yan, Lei Bai, Kun Zhang, Wanli Ouyang, and Peng Ye. "Scalable integration and prediction of unpaired single-cell and spatial multi-omics via regularized disentanglement." bioRxiv (2025).
 
 ## Contact
 Feel free to contact me via jianles@andrew.cmu.edu or sjl-2017@alumni.sjtu.edu.cn if you have any questions.
