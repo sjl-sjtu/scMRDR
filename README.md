@@ -52,6 +52,8 @@ sc.pl.umap(
 )
 ```
 
+Please visit (https://sjl-sjtu.github.io/scMRDR/) for detailed documents and APIs.
+
 ## Citation
 [1] Jianle Sun, Chaoqi Liang, Ran Wei, Peng Zheng, Lei Bai, Wanli Ouyang, Hongliang Yan, Peng Ye. scMRDR: A scalable and flexible framework for unpaired single-cell multi-omics data integration. The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS), 2025.
 
