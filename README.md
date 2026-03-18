@@ -1,6 +1,6 @@
 # scMRDR
 
-We implement a scalable and flexible generative framework called single-cell Multi-omics Regularized Disentangled Representations (scMRDR) for unpaired multi-omics integration. The manuscript has been accepted as a **spotlight** paper on The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS 2025) [1].
+We implement a scalable and flexible generative framework called single-cell Multi-omics Regularized Disentangled Representations (scMRDR) for unpaired multi-omics integration. The manuscript has been presented as a **spotlight** paper on The Thirty-ninth Annual Conference on Neural Information Processing Systems (NeurIPS 2025) [1].
 
 An extended version with more downstream applications and biological analyses such as cross-omics translation, spatial reconstruction and SVG detection, DNA methylation regulation effect assessment via spatial addictive mixed-effect model, and multi-species integration can be found at [2].
 
