@@ -128,7 +128,7 @@ class Integration:
             raise ValueError("Distribution not recognized!")
 
     def setup(self, hidden_layers = [100,50], latent_dim_shared = 15, latent_dim_specific = 15, dropout_rate=0.5, 
-              beta = 2, gamma = 1, lambda_adv = 2, device=None):
+              beta = 2, gamma = 5, lambda_adv = 5, device=None):
         '''
         Setup the model.
         Args:
