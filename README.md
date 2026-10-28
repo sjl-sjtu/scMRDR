@@ -1,4 +1,4 @@
-**[Notification]** In the original source code for the `scmrdr` package (located in the `src` folder), the default value for the adversarial loss coefficient, `lambda_adv`, was incorrectly set to 0.01 (a weight far too small to effectively align the latent representations across different omics modalities). Please refer to the weights actually used in the function calls within the `experiments` folder. The default parameter has now been updated.
+**[Notification]** In the previous source code for the `scmrdr` package (located in the `src` folder), the default value for the adversarial loss coefficient, `lambda_adv`, was incorrectly set to 0.01 (a weight far too small to effectively align the latent representations across different omics modalities). Please refer to the weights actually used in the function calls within the `experiments` folder. The default parameter has now been updated.
 
 # scMRDR
 
